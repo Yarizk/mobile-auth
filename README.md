@@ -61,7 +61,7 @@
 ```json
 {
     "fullName": "string",
-    "login": "string", // email
+    "email": "string", // email
     "phoneNumber": "string", // numeric string
     "gender": "string", // "male" or "female" or "other"
     "dateOfBirth": "string", // ISO date
@@ -93,6 +93,11 @@
 
 **Description:** Retrieve the profile information of the authenticated user.
 
+**Request Header:**
+```http
+Authorization: Bearer <token>
+```
+
 **Response:**
 ```json
 {
@@ -120,6 +125,11 @@
 
 **Description:** Update the profile information of the authenticated user.
 
+**Request Header:**
+```http
+Authorization: Bearer <token>
+```
+
 **Request Body:**
 ```json
 {
@@ -127,7 +137,7 @@
     "email": "johndoe@gmail.com",
     "phoneNumber": "08123456789",
     "gender": "male",
-    "dateOfBirth": "2004-05-13T17:00:00.000Z",
+    "dateOfBirth": "2004-05-13",
     "nik": "string", // 16 characters
 }
 ```
@@ -167,6 +177,11 @@
 **Endpoint:** `POST /api/user/update/picture`
 
 **Description:** Update the profile picture of the authenticated user.
+
+**Request Header:**
+```http
+Authorization: Bearer <token>
+```
 
 **Request Parameters:**
 ```http
