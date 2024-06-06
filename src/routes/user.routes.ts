@@ -3,6 +3,7 @@ import { celebrate } from 'celebrate';
 import { getProfile, updateProfile, updateProfilePicture } from '../controller/user.controller';
 import { upload } from '../config/multer.config';
 import { requireAuth } from '../middlewares/auth.middlewares';
+import { updateProfileSchema } from '../schema/validationSchema';
 
 
 const router = Router();
@@ -15,7 +16,8 @@ router.get(
 
 router.put(
     '/update', 
-    requireAuth, 
+    requireAuth,
+    celebrate(updateProfileSchema),
     updateProfile
 );
 
@@ -23,6 +25,7 @@ router.post(
     '/update/picture', 
     requireAuth, 
     upload.single('profilePic'), 
-    updateProfilePicture);
+    updateProfilePicture
+);
 
 export default router;

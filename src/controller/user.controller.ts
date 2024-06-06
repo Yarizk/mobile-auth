@@ -41,7 +41,8 @@ export const updateProfile = async (req: Request, res: Response) => {
     }
     res.status(200).json(profile);
   } catch (error) {
-    res.status(500).json({ error: "Error updating profile." });
+    console.log(error);
+    res.status(500).json({ error: "Email, phone number, or nik already taken." });
   }
 };
 
