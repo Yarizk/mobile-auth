@@ -38,10 +38,21 @@ export const getProfile = async (req: Request, res: Response) => {
   try {
     const userId = req.currentUser!.id;
     const user = await User.findById(userId);
+    
     if (!user) {
       return res.status(404).json({ message: "User not found." });
     }
-    res.status(200).json(user);
+    let profile = {
+      _id: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      gender: user.gender,
+      dateOfBirth: user.dateOfBirth,
+      nik: user.nik,
+      profilePicUrl: user.profilePicUrl
+    }
+    res.status(200).json(profile);
   } catch (error) {
     res.status(500).json({ error: "Error getting profile." });
   }
