@@ -36,7 +36,7 @@ export const registerSchema = {
       'string.pattern.base': 'Phone number must be between 10 to 15 digits',
       'any.required': 'Phone number is required',
     }),
-    gender: Joi.string().valid('male', 'female').required().messages({
+    gender: Joi.string().valid('male', 'female', 'other').required().messages({
       'string.base': 'Gender must be a string',
       'any.only': 'Gender must be either male or female',
       'string.empty': 'Gender cannot be empty',
@@ -84,7 +84,7 @@ export const updateProfileSchema = {
       'string.pattern.base': 'Phone number must be between 10 to 15 digits',
       'any.required': 'Phone number is required',
     }),
-    gender: Joi.string().valid('male', 'female').required().messages({
+    gender: Joi.string().valid('male', 'female', 'other').required().messages({
       'string.base': 'Gender must be a string',
       'any.only': 'Gender must be either male or female',
       'string.empty': 'Gender cannot be empty',
