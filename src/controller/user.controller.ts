@@ -10,9 +10,18 @@ export const updateProfile = async (req: Request, res: Response) => {
 
   try {
     const userId = req.currentUser!.id;
-    const { fullName, email, phoneNumber, gender, dateOfBirth } = req.body;
+    const { fullName, email, phoneNumber, gender, dateOfBirth, nik } = req.body;
 
-    const user = await User.findByIdAndUpdate(userId, { fullName, email, phoneNumber, gender, dateOfBirth }, { new: true });
+    if (!fullName || !email || !phoneNumber || !gender || !dateOfBirth || !nik) {
+      return res.status(400).json({ message: "All fields are required." });
+    }
+    
+    const check = await User.findOne({ email, phoneNumber, nik: dateOfBirth });
+    if (check) {
+      return res.status(400).json({ message: "Email, phone number, or nik already taken." });
+    }
+
+    const user = await User.findByIdAndUpdate(userId, { fullName, email, phoneNumber, gender, dateOfBirth, nik }, { new: true });
     if (!user) {
       return res.status(404).json({ message: "User not found." });
     }
@@ -35,5 +44,18 @@ export const updateProfilePicture = async (req: Request, res: Response) => {
     res.status(200).json({ message: "Profile picture updated successfully." });
   } catch (error) {
     res.status(500).json({ error: "Error updating profile picture." });
+  }
+};
+
+export const getProfile = async (req: Request, res: Response) => {
+  try {
+    const userId = req.currentUser!.id;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: "Error getting profile." });
   }
 };

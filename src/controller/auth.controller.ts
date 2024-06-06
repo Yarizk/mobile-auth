@@ -7,8 +7,6 @@ export const registerUser = async (req: Request, res: Response) => {
   try {
     const { fullName, email, phoneNumber, gender, dateOfBirth, nik, password } = req.body;
     const hashedPassword = await bcrypt.hashSync(password, 10);
-    console.log(password);  
-    console.log(hashedPassword);
 
     const newUser = new User({
       fullName,
@@ -19,8 +17,6 @@ export const registerUser = async (req: Request, res: Response) => {
       nik,
       password: hashedPassword
     });
-
-    console.log(newUser);
     
     const emailCheck = await User.findOne({ email }) ;
     const phoneNumberCheck = await User.findOne({ phoneNumber }) ;
