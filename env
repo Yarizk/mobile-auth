@@ -1,0 +1,4 @@
+PORT=3009
+MONGO_URI=mongodb+srv://yazidrizkik:admin123@cluster0.qinijsa.mongodb.net/
+JWT_SECRET="xQEdj5Y/m+GOo6tcVkDPZ2dmCu6YNKDTe+LaNBpFuG0="
+JWT_EXPIRATION=3600
