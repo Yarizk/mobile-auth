@@ -1,3 +1,4 @@
+import { base } from './../../node_modules/acorn-walk/dist/walk.d';
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import path from 'path';
@@ -73,19 +74,23 @@ export const getProfile = async (req: Request, res: Response) => {
 export const updateProfilePicture = async (req: Request, res: Response) => {
   try {
     const userId = req.currentUser!.id;
-    console.log(userId);
-    const file = req.file;
-
+    const base64 = req.body.image;
+    let  filename = req.body.filename;
+    const file = Buffer.from(base64, 'base64');
+    
     if (!file) {
       return res.status(400).json({ message: "No file uploaded." });
     }
 
-    const uploadDir = path.join(__dirname, '..' , '..', 'uploads');
+    const uploadDir = path.join(__dirname, '..', '..', 'uploads');
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
-    file.originalname = file.originalname.replace(/\s/g, '-');
-    const fileName = `${userId}-${file.originalname}`;
+    filename = filename.replace(/\s/g, '');
+    const fileName = `${userId}-${new Date().getTime()}${filename}`;
+    const filePath = path.join(uploadDir, fileName);
+
+    fs.writeFileSync(filePath, file);
 
     const profilePicUrl = `${process.env.HOST}/uploads/${fileName}`;
 

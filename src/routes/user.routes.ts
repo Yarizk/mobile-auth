@@ -24,7 +24,7 @@ router.put(
 router.post(
     '/update/picture', 
     requireAuth, 
-    upload.single('profilePic'), 
+    // upload.single('image') ,
     updateProfilePicture
 );
 

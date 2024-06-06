@@ -27,8 +27,6 @@ export const registerUser = async (req: Request, res: Response) => {
     if (nikCheck) return res.status(400).json({ error: "User with this nik already exists." });
 
     await newUser.save();
-    // generaye token
-
     const token = generateToken(newUser._id.toString(), newUser.fullName!);
     res.status(201).json({ message: "User registered successfully!", token });
   } catch (error: any) {
