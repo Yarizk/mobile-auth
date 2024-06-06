@@ -4,11 +4,16 @@
 
 - [Authentication Routes](#authentication-routes)
 - [Register](#register)
+`POST /api/auth/register`
 - [Login](#login)
+`POST /api/auth/login`
+- [User Routes](#user-routes) 
 - [Get Profile](#get-profile)
+`GET /api/user/profile`
 - [Update Profile](#update-profile)
+`PUT /api/user/update`
 - [Update Profile Picture](#update-profile-picture)
-- [User Routes](#user-routes)   
+`POST /api/user/update/picture`
 - [Example Requests and Responses](#example-requests-and-responses)
 - [Error Responses](#error-responses)
 
@@ -164,6 +169,15 @@
 **Description:** Update the profile picture of the authenticated user.
 
 **Request Parameters:**
+```http
+POST /api/user/update/picture
+Authorization: Bearer <token>
+Content-Type: multipart/form-data //
+
+{
+    "profilePic": <file> // .png or .jpg
+}
+```
 - `profilePic`: Required, must be a file.
 
 **Validation:**
