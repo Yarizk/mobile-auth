@@ -6,5 +6,5 @@ export interface IUser {
     dateOfBirth: Date;
     nik: string;
     password: string;
-    profilePic: Buffer;
+    profilePicUrl: string;
 }

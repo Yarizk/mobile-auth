@@ -15,13 +15,6 @@ router.get(
     getProfile
 ); 
 
-router.get(
-    '/profile/picture', 
-    requireAuth, 
-    // celebrate({ query: profilePictureSchema }), 
-    updateProfilePicture
-);
-
 router.put(
     '/update', 
     requireAuth, 
