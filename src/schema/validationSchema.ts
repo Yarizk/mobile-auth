@@ -24,11 +24,11 @@ export const registerSchema = {
       'string.max': 'Full name must be less than or equal to 50 characters long',
       'any.required': 'Full name is required',
     }),
-    login: Joi.string().email().required().messages({
-      'string.base': 'Login must be a valid email address',
-      'string.email': 'Login must be a valid email address',
-      'string.empty': 'Login cannot be empty',
-      'any.required': 'Login is required',
+    email: Joi.string().email().required().messages({
+      'string.base': 'email must be a valid email address',
+      'string.email': 'email must be a valid email address',
+      'string.empty': 'email cannot be empty',
+      'any.required': 'email is required',
     }),
     phoneNumber: Joi.string().pattern(/^\d{10,15}$/).required().messages({
       'string.base': 'Phone number must be a string of digits',
