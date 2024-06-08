@@ -20,4 +20,6 @@ router.post(
     // celebrate({ body: profilePictureSchema }), 
     updateProfilePicture);
 
+
+
 export default router;
