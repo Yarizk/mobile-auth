@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import { Joi, celebrate } from 'celebrate';
-import { registerUser, loginUser } from '../controller/auth.controller';
-import { loginSchema, registerSchema } from '../schema/validationSchema';
+import { registerUser, loginUser, validateOTP } from '../controller/auth.controller';
+import { loginSchema, otpSchema, registerSchema } from '../schema/validationSchema';
+import { requireAuth } from '../middlewares/auth.middlewares';
 
 
 const router = Router();
@@ -16,5 +17,14 @@ router.post(
     celebrate(loginSchema),
     loginUser
 );
+
+
+
+router.post(
+    '/otp',
+    requireAuth,
+    celebrate(otpSchema),
+    validateOTP,
+)
 
 export default router;

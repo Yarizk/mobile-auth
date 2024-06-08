@@ -15,6 +15,7 @@ export const loginSchema = {
   }),
 };
 
+
 export const registerSchema = {
   body: Joi.object().keys({
     fullName: Joi.string().min(3).max(50).required().messages({
@@ -112,3 +113,54 @@ export const profilePictureSchema = {
     }),
   }).unknown(true),
 };
+
+
+export const otpSchema = {
+    body: Joi.object().keys({
+      otp: Joi.string().length(4).required().messages({
+        'otp.base': 'otp must be a string',
+        'string.length': 'otp must be exactly 4 characters long',
+        'any.required': 'otp is required',
+      })
+    }),
+}
+
+
+export const nearestDoctorSchema = {
+    body: Joi.object().keys({
+      latitude: Joi.number().required().messages({
+        'latitude.base': 'Latitude must be a floating point',
+        'any.required': 'latitude is required',
+      }),
+      longitude: Joi.number().required().messages({
+        'longitude.base': 'longitude must be a floating point',
+        'any.required': 'longitude is required'
+      }),
+      speciality: Joi.string().valid('ALL','Umum',  'Spesialis Penyakit dalam',
+       'Spesialis Anak', 'Spesialis Saraf', 'Spesialis Kandungan dan Ginekologi', 'Spesialis Bedah', 
+       'Spesialis Kulit dan Kelamin',
+       'Spesialis THT', 'Spesialis Mata', 'Psikiater',
+        'Dokter Gigi', 'Spesialis Kedokteran Forensik dan Rehabilitasi')
+        .required().messages({
+          'speciality.base': `speciality must be a string `,
+          'speciality.valid': `speciality must be one of 'ALL','Umum',  'Spesialis Penyakit dalam',
+              'Spesialis Anak', 'Spesialis Saraf', 'Spesialis Kandungan dan Ginekologi', 'Spesialis Bedah', 
+              'Spesialis Kulit dan Kelamin',
+              'Spesialis THT', 'Spesialis Mata', 'Psikiater',
+                'Dokter Gigi', 'Spesialis Kedokteran Forensik dan Rehabilitasi'`,
+          'speciality.required': `speciality is required`
+        }),
+      harga: Joi.string().valid('KURANGDARI50K', 'LEBIHDARI50K', 'LEBIHDARI50KKURANGDARI100K').required().messages({
+        'harga.base': 'harga must be an string',
+        'harga.less': 'harga must be less than Rp 200000',
+        'harga.valid': `harga must be one of 'KURANGDARI50K', 'LEBIHDARI50K', 'LEBIHDARI50KKURANGDARI100K'`,
+        'any.required': 'harga is required'
+      }),
+      jarak: Joi.string().valid('TERDEKAT', 'KURANGDARI10KM', 'LEBIHDARI10KM').required().messages({
+        'jarak.base': 'jarak must be a string',
+        'jarak.valid': `jarak must be one of 'TERDEKAT', 'KURANGDARI10KM', 'LEBIHDARI10KM'`,
+        'any.required': 'jarak is required'
+      }),
+      
+    })
+}

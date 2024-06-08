@@ -2,6 +2,24 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/user.model';
+import OTP from '../models/otp.model';
+import { sendOTPMail } from '../util/nodemailer';
+import { Error } from 'mongoose';
+
+
+function addHours(date: Date, hours: number) {
+  const hoursToAdd = hours * 60 * 60 * 1000;
+  const newDate = new Date();
+  newDate.setTime(date.getTime() + hoursToAdd);
+  return newDate;
+}
+
+function diff_hours(dt2: Date, dt1: Date) 
+ {
+  var diff =(dt2.getTime() - dt1.getTime()) / 1000;
+  diff /= (60 * 60);
+  return Math.abs(Math.round(diff));
+ }
 
 export const registerUser = async (req: Request, res: Response) => {
   try {
@@ -28,6 +46,21 @@ export const registerUser = async (req: Request, res: Response) => {
 
     await newUser.save();
     const token = generateToken(newUser._id.toString(), newUser.fullName!);
+
+
+    // create otp and send otp email
+    const dateNow = new Date();
+    const otp = `${Math.floor(1000 + Math.random() * 9000)}`
+    const newOTPDB = new OTP({
+      otp: otp,
+      userID: newUser.id,
+      email: email,
+       expiresAt:  addHours(dateNow, 1)
+    })
+    await newOTPDB.save();
+
+    await sendOTPMail(email, otp); // send otp mail....
+
     res.status(201).json({ message: "User registered successfully!", token });
   } catch (error: any) {
     console.log(error);
@@ -52,13 +85,77 @@ export const loginUser = async (req: Request, res: Response) => {
       return res.status(401).json({ error: "Invalid credentials." });
     }
     const token = generateToken(user._id.toString(), user.fullName!);
-    res.status(200).json({ message: "Logged in successfully!", token });
 
+    // create otp and send otp email
+    const dateNow = new Date();
+    const otp = `${Math.floor(1000 + Math.random() * 9000)}`
+    const newOTPDB = new OTP({
+      otp: otp,
+      userID: user.id,
+      email: user.email,
+       expiresAt:  addHours(dateNow, 1),
+      
+    })
+    await newOTPDB.save();
+
+    await sendOTPMail(user.email, otp); // send otp mail....
+
+    res.status(200).json({ message: "Logged in successfully!", token });
   } catch (error) {
     res.status(500).json({ error: "Error logging in." });
   }
 };
+
+
 const generateToken = (userId: string, fullName: string) => {
     return jwt.sign({ id: userId, fullName }, process.env.JWT_SECRET!, { expiresIn: '1d' });
 };
   
+
+export const validateOTP = async( req: Request, res: Response) => {
+  try {
+    const {otp} = req.body;
+    const currentUserId = req.currentUser!.id;
+
+    const otpDB = await OTP.findOne({
+      otp: otp,
+
+    }).sort({expiresAt: "desc" });
+
+    if (!otpDB ) {
+        return res.status(404).json({ error: "your OTP code is invalid." }); 
+    }
+
+    if (otpDB.used ) {
+        return res.status(403).json({ error: "Otp already used" });
+    }
+
+    const nowDate = new Date();
+    if (nowDate >   otpDB!.expiresAt) {
+        return res.status(400).json({ error: "Your OTP code is expired" });
+    }
+
+    const user = await User.findOne({
+      $or: [{ email: otpDB.email }, ]
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    if (user.id != currentUserId ) {
+      return res.status(403).json({ error: "You are not the owner of the otp" });
+
+    }
+
+    // buat otp sudah dipakai
+    otpDB.used = true
+    await otpDB.save()
+
+    const token = generateToken(user._id.toString(), user.fullName!);
+
+    res.status(200).json({ message: "OTP Verified successfully!", token });
+  } catch (error ) {
+    res.status(500).json({ error: "Error registering new user." });
+  }
+}

@@ -33,14 +33,30 @@ export const nearestDoctor = async(req: Request, res: Response) => {
         
         let doctors: any;
         if (harga == Harga.KURANGDARI50K) {
-         doctors = await Doctor.find().where('speciality').equals(speciality)
-            .where('pricePerHour').lt(50000);
+            if (speciality == "ALL" ){
+                 doctors = await Doctor.find()
+                     .where('pricePerHour').lt(50000);
+            } else {
+                 doctors = await Doctor.find().where('speciality').equals(speciality)
+                    .where('pricePerHour').lt(50000);
+            }
         }else if (harga == Harga.LEBIHDARI50K) {
-             doctors = await Doctor.find().where('speciality').equals(speciality)
-            .where('pricePerHour').gt(50000);
+            if (speciality == "ALL") {
+                 doctors = await Doctor.find()
+                    .where('pricePerHour').gt(50000);
+            }else {
+                 doctors = await Doctor.find().where('speciality').equals(speciality)
+                     .where('pricePerHour').gt(50000);
+            }
+            
         }else {
-             doctors = await Doctor.find().where('speciality').equals(speciality)
-            .where('pricePerHour').gt(50000).lt(100000);
+            if (speciality == "ALL" ) {
+                doctors = await Doctor.find()
+                    .where('pricePerHour').gt(50000).lt(100000);
+            }else {
+                doctors = await Doctor.find().where('speciality').equals(speciality)
+                    .where('pricePerHour').gt(50000).lt(100000);
+            }
         }
        
 
@@ -88,22 +104,22 @@ function nearestDoctorFinderKurangDariTenKM( neighborsBox: string[], doctors: an
             }
             
             // buat box uatara user
-            if (upperBox== geohashLocUser) {
+            if (upperBox== currentDoctorLoc) {
                 nearestDoctor.push(currentDoctor)
             }
 
             // bat east  box
-            if (eastBox == geohashLocUser) {
+            if (eastBox == currentDoctorLoc) {
                 nearestDoctor.push(currentDoctor)
             }
        
              // buat south  box
-            if (southBox == geohashLocUser) {
+            if (southBox == currentDoctorLoc) {
                nearestDoctor.push(currentDoctor)
             }
 
               // buat  west box
-            if (westBox == geohashLocUser) {
+            if (westBox == currentDoctorLoc) {
                 nearestDoctor.push(currentDoctor)
             }
 
@@ -135,40 +151,40 @@ function nearestDoctorFinder( neighborsBox: string[], doctors: any, geohashLocUs
             }
             
             // buat box uatara user
-            if (upperBox == geohashLocUser) {
+            if (upperBox == currentDoctorLoc) {
                 nearestDoctor.push(currentDoctor)
             }
 
             // buat north east box
-            if (neBox == geohashLocUser) {
+            if (neBox == currentDoctorLoc) {
                nearestDoctor.push(currentDoctor)
             }
 
             // bat east  box
-            if (eastBox == geohashLocUser) {
+            if (eastBox == currentDoctorLoc) {
                 nearestDoctor.push(currentDoctor)
             }
             // buat south east  box
-            if (southEastBox == geohashLocUser) {
+            if (southEastBox == currentDoctorLoc) {
 
                 nearestDoctor.push(currentDoctor)
             }
 
              // buat south  box
-            if (southBox == geohashLocUser) {
+            if (southBox == currentDoctorLoc) {
                nearestDoctor.push(currentDoctor)
             }
              // buat south  west box
-            if (southWestBox == geohashLocUser) {
+            if (southWestBox == currentDoctorLoc) {
                 nearestDoctor.push(currentDoctor)
             }
               // buat  west box
-            if (westBox == geohashLocUser) {
+            if (westBox == currentDoctorLoc) {
                 nearestDoctor.push(currentDoctor)
             }
 
             // buat  northWest box
-            if (norhWestBox == geohashLocUser) {
+            if (norhWestBox == currentDoctorLoc) {
                nearestDoctor.push(currentDoctor)
             }
         }
