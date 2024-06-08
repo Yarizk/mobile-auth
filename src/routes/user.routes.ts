@@ -1,24 +1,32 @@
 import { Router } from 'express';
 import { celebrate } from 'celebrate';
-import { updateProfile, updateProfilePicture } from '../controller/user.controller';
+import { getProfile, updateProfile, updateProfilePicture } from '../controller/user.controller';
 import { upload } from '../config/multer.config';
 import { requireAuth } from '../middlewares/auth.middlewares';
-// import { updateProfileSchema, profilePictureSchema } from '../schema/validationSchema';
+import { updateProfileSchema } from '../schema/validationSchema';
+
 
 const router = Router();
 
+router.get(
+    '/profile', 
+    requireAuth, 
+    getProfile
+); 
+
 router.put(
     '/update', 
-    requireAuth, 
-    // celebrate({ body: updateProfileSchema }), 
-    updateProfile);
+    requireAuth,
+    celebrate(updateProfileSchema),
+    updateProfile
+);
 
 router.post(
     '/update/picture', 
     requireAuth, 
-    upload.single('profilePic'), 
-    // celebrate({ body: profilePictureSchema }), 
-    updateProfilePicture);
+    // upload.single('image') ,
+    updateProfilePicture
+);
 
 
 

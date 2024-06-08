@@ -7,8 +7,6 @@ export const registerUser = async (req: Request, res: Response) => {
   try {
     const { fullName, email, phoneNumber, gender, dateOfBirth, nik, password } = req.body;
     const hashedPassword = await bcrypt.hashSync(password, 10);
-    console.log(password);  
-    console.log(hashedPassword);
 
     const newUser = new User({
       fullName,
@@ -19,8 +17,6 @@ export const registerUser = async (req: Request, res: Response) => {
       nik,
       password: hashedPassword
     });
-
-    console.log(newUser);
     
     const emailCheck = await User.findOne({ email }) ;
     const phoneNumberCheck = await User.findOne({ phoneNumber }) ;
@@ -31,7 +27,8 @@ export const registerUser = async (req: Request, res: Response) => {
     if (nikCheck) return res.status(400).json({ error: "User with this nik already exists." });
 
     await newUser.save();
-    res.status(201).json({ message: "User registered successfully!" });
+    const token = generateToken(newUser._id.toString(), newUser.fullName!);
+    res.status(201).json({ message: "User registered successfully!", token });
   } catch (error: any) {
     console.log(error);
     res.status(500).json({ error: "Error registering new user." });

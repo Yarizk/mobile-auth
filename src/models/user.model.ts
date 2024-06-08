@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema<IUser>({
     dateOfBirth: { type: Date, required: true },
     nik: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    profilePic: { type: Buffer, contentType: String } 
+    profilePicUrl: { type: String }
   });
   
 const User = mongoose.model<IUser>('User', userSchema);
