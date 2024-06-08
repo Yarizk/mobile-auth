@@ -91,6 +91,43 @@
 
 ---
 
+### OTP
+
+**Endpoint:** `POST /api/auth/otp`
+
+**Description:** validasi otp setelah login dan register
+
+**Request Header:**
+
+```http
+Authorization: Bearer <token>
+```
+
+**Request Body:**
+
+```json
+{
+  "otp": "2114"
+}
+```
+**Validation:**
+
+- `otp`: Required, string panjang harus 4
+
+**Responses:**
+
+```json
+{
+  "message": "OTP Verified successfully!",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjNlYjhkYjI3OTc5MDFkMzQ4ZmQ3OCIsImZ1bGxOYW1lIjoiTGludGFuZyIsImlhdCI6MTcxNzgyNDgwOCwiZXhwIjoxNzE3OTExMjA4fQ.5wciChpMnwUfRjalWOm4PSQCcBVkY3D2WGylWumfTdo"
+}
+```
+
+- **200 OK**: Profile information retrieved successfully.
+- **401 Unauthorized**: User not authenticated.
+- **404 Not Found**: User not found.
+- **403 Forbidden**: Token sudah pernah dipake/token expired/bukan owner otpnya
+
 ### User Routes
 
 #### Get Profile
@@ -319,12 +356,13 @@ Content-Type: multipart/form-data
 
 #### Filter DoctorExample
 
-- Jarak = TERDEKAT,KURANGDARI10KM,LEBIHDARI10KM
+- Jarak = TERDEKAT,KURANGDARI10KM
 - Harga = KURANGDARI50K,LEBIHDARI50K,LEBIHDARI50KKURANGDARI100K
 - speciality = 'ALL', 'Umum', 'Spesialis Penyakit dalam', 'Spesialis Anak', 'Spesialis Saraf', 'Spesialis - Kandungan dan Ginekologi', 'Spesialis Bedah', 'Spesialis Kulit dan Kelamin',
   'Spesialis THT', 'Spesialis Mata', 'Psikiater', 'Dokter Gigi', 'Spesialis Kedokteran Forensik dan Rehabilitasi'
 
 latitude = -7.768092637431007 (FMIPA)
+
 longitude = 110.37654435994521 (FMIPA)
 
 **Request:**
@@ -342,6 +380,17 @@ Content-Type: application/json
     "jarak": "KURANGDARI10KM"
 }
 ```
+
+
+**Validation:**
+
+- `latitude`: Required, floating number,yang penting lebih dari 5 digit dibelakang desimal (harus koordinat FMIPA si soalnya aku isi data dummynya disekitas ugm)
+- `longitude`: Required, floating number,yang penting lebih dari 5 digit dibelakang desimal (harus koordinat FMIPA si soalnya aku isi data dummynya disekitas ugm)
+- `speciality`: Required, string. bisa 'ALL' buat gak filter berdasarkan speciality. Value harus dalam ('Umum', 'Spesialis Penyakit dalam', 'Spesialis Anak', 'Spesialis Saraf', 'Spesialis - Kandungan dan Ginekologi', 'Spesialis Bedah', 'Spesialis Kulit dan Kelamin',
+  'Spesialis THT', 'Spesialis Mata', 'Psikiater', 'Dokter Gigi', 'Spesialis Kedokteran Forensik dan Rehabilitasi')
+- `harga`: Required, string. value harus dalam (KURANGDARI50K,LEBIHDARI50K,LEBIHDARI50KKURANGDARI100K)
+- `jarak`: Required, string. Value harus dalam ( TERDEKAT,KURANGDARI10KM)
+
 
 **Response:**
 
