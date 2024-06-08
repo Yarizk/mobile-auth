@@ -128,7 +128,7 @@ function nearestDoctorFinder( neighborsBox: string[], doctors: any, geohashLocUs
 
     for (let i =0; i < doctors.length; i++) {
             const currentDoctor = doctors[i];
-            const currentDoctorLoc =  doctors[i].geohashLoc[precision].substr(0, precision);
+            const currentDoctorLoc =  doctors[i].geohashLoc.substr(0, precision);
 
             let sameLength = 0;
             if (currentDoctorLoc== geohashLocUser){
