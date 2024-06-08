@@ -289,6 +289,58 @@ Content-Type: multipart/form-data
 }
 ```
 
+
+## Doctor Auth
+#### Filter DoctorExample
+
+Jarak = TERDEKAT,KURANGDARI10KM,LEBIHDARI10KM
+Harga = KURANGDARI50K,LEBIHDARI50K,LEBIHDARI50KKURANGDARI100K
+speciality = 'Umum',  'Spesialis Penyakit dalam', 'Spesialis Anak', 'Spesialis Saraf', 'Spesialis Kandungan dan Ginekologi', 'Spesialis Bedah', 'Spesialis Kulit dan Kelamin',
+    'Spesialis THT', 'Spesialis Mata', 'Psikiater', 'Dokter Gigi', 'Spesialis Kedokteran Forensik dan Rehabilitasi'
+
+latitude = -7.768092637431007 (FMIPA)
+longitude = 110.37654435994521 (FMIPA)
+
+**Request:**
+```http
+POST /api/doctor
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+    "latitude": -7.768092637431007, 
+    "longitude":  110.37654435994521,
+    "speciality": "Spesialis Kulit dan Kelamin",
+    "harga": "LEBIHDARI50KKURANGDARI100K",
+    "jarak": "LEBIHDARI10KM"
+}
+```
+
+**Response:**
+```json
+{
+      "_id": "6663a27607462c85dae65c1e",
+            "name": "Fitria Fitria Kusuma",
+            "speciality": "Spesialis Kulit dan Kelamin",
+            "pricePerHour": 67698,
+            "locLatitude": -7.768202459414219,
+            "locLongitude": 110.37484719229765,
+            "practicingFrom": 2017,
+            "profilePic": "https://png.pngtree.com/png-clipart/20231002/original/pngtree-young-afro-professional-doctor-png-image_13227671.png",
+            "appointments": [],
+            "availability": {
+                "office": "Kasih Ibu",
+                "dayOfWeekStart": 2,
+                "dayOfWeekEnd": 5,
+                "startDayTime": 7,
+                "endDayTime": 15,
+                "_id": "6663a27607462c85dae65c1f"
+            },
+            "geohashLoc": "qqw7z9udb",
+            "__v": 0
+}
+```
+
 ---
 
 ### Error Responses

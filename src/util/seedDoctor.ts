@@ -29,15 +29,18 @@ export async  function seedRandomDoctor() {
     // kebumen  -7.674637745074407  109.65838381007573
     //  taman pancasila=-7.59732682561945, 110.95034623566734
     const hospitals = ["Siloam", "RSUD", "Sardjito", "Yarsis", "Kasih Ibu", "RS UNS"," RS UGM", "RS UMS"]
-    for (let i=0; i < 1000; i++) {
+    for (let i=0; i < 5000; i++) {
         const randomInteger = Math.round(getRandomNum({min: 0, max: 10}))
         // -7.821800411929682, 110.32432872552427
         // -7.762315251638179, 110.41359170743628
 
         // -7.76757495604769, 110.37864098110552 ugm
         // -7.770233585317687, 110.37336182212557 rs ugm
-        const docLatitude = getRandomNum({min: -7.770233585317687, max:  -7.76757495604769})
-        const docLongitude = getRandomNum({min: 110.37336182212557, max:   110.37864098110552})
+
+        //  -7.821560601177296, 110.32623392358305
+        //  -7.761413051417575, 110.41285444468492
+        const docLatitude = getRandomNum({min:  -7.821560601177296, max:   -7.761413051417575})
+        const docLongitude = getRandomNum({min: 110.32623392358305, max:   110.41285444468492})
         const geoHash = geohash.encode(docLatitude, docLongitude);
         const docAvailability: IAvailability = {
                 office: hospitals[  Math.round( getRandomNum({min:0 , max: 7}))],

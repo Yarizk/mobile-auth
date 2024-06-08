@@ -46,7 +46,7 @@ export const nearestDoctor = async(req: Request, res: Response) => {
 
        
         let nearestDoctors: IDoctor[] = []
-        // yang satu box geohassh length 6 (radius 1km)
+        // yang satu box geohassh length 6 (widthxlength 1kmx0.49km)
         if (jarak == Jarak.TERDEKAT) {
             const geohashLocUser = geohash.encode(latitude, longitude, 6)
             const neighborsBox = geohash.neighbors(geohashLocUser); // neighbor geohash box dari user
@@ -73,7 +73,6 @@ function nearestDoctorFinderKurangDariTenKM( neighborsBox: string[], doctors: an
      const upperBox = neighborsBox[0]; // box utarranya user
     var nearestDoctor : IDoctor[] = [];
 
-         // northeast box
         const eastBox = neighborsBox[2]; // box timurntya user
         const southBox = neighborsBox[4];
         const westBox = neighborsBox[6];
