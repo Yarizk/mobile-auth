@@ -312,7 +312,7 @@ Content-Type: application/json
     "longitude":  110.37654435994521,
     "speciality": "Spesialis Kulit dan Kelamin",
     "harga": "LEBIHDARI50KKURANGDARI100K",
-    "jarak": "LEBIHDARI10KM"
+    "jarak": "KURANGDARI10KM"
 }
 ```
 
