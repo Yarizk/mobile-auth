@@ -4,11 +4,11 @@ import { IUser } from '../interfaces/IUser';
 const userSchema = new mongoose.Schema<IUser>({
     fullName: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    phoneNumber: { type: String, required: true, unique: true },
-    gender: { type: String, required: true },
-    dateOfBirth: { type: Date, required: true },
-    nik: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    phoneNumber: { type: String, required: false, unique: true },
+    gender: { type: String, required: false },
+    dateOfBirth: { type: Date, required: false },
+    nik: { type: String, required: false, unique: true },
+    password: { type: String, required: false },
     profilePicUrl: { type: String }
   });
   

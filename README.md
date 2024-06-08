@@ -123,10 +123,47 @@ Authorization: Bearer <token>
 }
 ```
 
-- **200 OK**: Profile information retrieved successfully.
+- **200 OK**: OTP validated successfully.
 - **401 Unauthorized**: User not authenticated.
 - **404 Not Found**: User not found.
 - **403 Forbidden**: Token sudah pernah dipake/token expired/bukan owner otpnya
+
+
+
+
+### Send New OTP
+
+**Endpoint:** `POST /api/auth/newOTP`
+
+**Description:** kirim otp lagi setelah login dan register (pake accesstoken)
+
+**Request Header:**
+
+```http
+Authorization: Bearer <token>
+```
+
+**Responses:**
+
+```json
+{
+  "message": "OTP Send successfully!"
+}
+```
+
+- **200 OK**: OTP send successfully.
+- **401 Unauthorized**: User not authenticated.
+- **404 Not Found**: User not found.
+
+
+### Login Google
+**Endpoint:** `GET /api/auth/login/google`
+
+**Description:** login pake google account
+
+**Responses:**
+redirect ke  `memcaps://app/login?token=${token}`
+
 
 ### User Routes
 
@@ -384,8 +421,8 @@ Content-Type: application/json
 
 **Validation:**
 
-- `latitude`: Required, floating number,yang penting lebih dari 5 digit dibelakang desimal (harus koordinat FMIPA si soalnya aku isi data dummynya disekitas ugm)
-- `longitude`: Required, floating number,yang penting lebih dari 5 digit dibelakang desimal (harus koordinat FMIPA si soalnya aku isi data dummynya disekitas ugm)
+- `latitude`: Required, floating number,yang penting lebih dari 5 digit dibelakang desimal (harus koordinat FMIPA si soalnya aku isi data dummynya disekitar ugm)
+- `longitude`: Required, floating number,yang penting lebih dari 5 digit dibelakang desimal (harus koordinat FMIPA si soalnya aku isi data dummynya disekitar ugm)
 - `speciality`: Required, string. bisa 'ALL' buat gak filter berdasarkan speciality. Value harus dalam ('Umum', 'Spesialis Penyakit dalam', 'Spesialis Anak', 'Spesialis Saraf', 'Spesialis - Kandungan dan Ginekologi', 'Spesialis Bedah', 'Spesialis Kulit dan Kelamin',
   'Spesialis THT', 'Spesialis Mata', 'Psikiater', 'Dokter Gigi', 'Spesialis Kedokteran Forensik dan Rehabilitasi')
 - `harga`: Required, string. value harus dalam (KURANGDARI50K,LEBIHDARI50K,LEBIHDARI50KKURANGDARI100K)

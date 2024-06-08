@@ -83,6 +83,9 @@ export const nearestDoctor = async(req: Request, res: Response) => {
     }
 }
 
+export const loginGoogle = async(req: Request, res: Response) => {
+    
+}
 
 
 function nearestDoctorFinderKurangDariTenKM( neighborsBox: string[], doctors: any, geohashLocUser: string, precision: number): IDoctor[] {

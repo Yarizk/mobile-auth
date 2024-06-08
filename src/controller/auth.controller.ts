@@ -156,6 +156,61 @@ export const validateOTP = async( req: Request, res: Response) => {
 
     res.status(200).json({ message: "OTP Verified successfully!", token });
   } catch (error ) {
+    res.status(500).json({ error: "Error validateOTP" });
+  }
+}
+
+
+export const loginGoogle = async (req: Request, res: Response) => {
+  try {
+      let user : any;
+       user = await User.findOne({
+        $or: [{ email: req.user?.email }, ]
+      });
+     if (!user) {
+       user = new User({
+        fullName:  req.user?.firstName! + req.user?.lastName,
+        email: req.user?.email,
+      });
+      await user.save();
+     }
+     const token = generateToken(user!._id.toString(), user!.fullName!);
+     console.log(`login google successfull ${token}`)
+
+      res.redirect(
+            `memcaps://app/login?token=${token}`
+      )
+  }catch (error ) {
     res.status(500).json({ error: "Error registering new user." });
   }
+    
+}
+
+export const sendNewOTP = async (req: Request, res: Response) => {
+  try {
+      const currentUserId = req.currentUser!.id;
+    // get user from db
+    const user = await User.findOne({
+      $or: [{ _id: currentUserId },]
+    });
+
+
+  // create otp and send otp email
+    const dateNow = new Date();
+    const otp = `${Math.floor(1000 + Math.random() * 9000)}`
+    const newOTPDB = new OTP({
+      otp: otp,
+      userID: user?.id,
+      email: user?.email,
+       expiresAt:  addHours(dateNow, 1)
+    })
+    await newOTPDB.save();
+
+    await sendOTPMail(user!.email, otp); // send otp mail....
+    res.status(200).json({ message: "OTP Send successfully!" });
+
+  }catch (error ) {
+    res.status(500).json({ error: "Error registering new user." });
+  }
+  
 }

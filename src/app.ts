@@ -12,10 +12,9 @@ import Celebrate from 'celebrate';
 import { faker } from '@faker-js/faker';
 import { seedRandomDoctor } from './util/seedDoctor';
 import Doctor from './models/doctor.model';
-
-
-
-
+import {Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import passport from "passport";
+import session from "express-session";
 
 
 dotenv.config();
@@ -27,8 +26,7 @@ dbConfig();
 
 
 
-
-
+// seed doctor data
 // (async () => {
 //   try {
 //     // await Doctor.deleteMany()
@@ -38,6 +36,63 @@ dbConfig();
 //     console.log(e);
 //   }
 // })()
+
+
+export const initPassport = (app: any) => {
+  //init's the app session
+  app.use(
+    session({
+      resave: false,
+      saveUninitialized: true,
+      secret: process.env.SECRET!,
+    })
+  );
+  //init passport
+  app.use(passport.initialize());
+  app.use(passport.session());
+};
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.CLIENT_ID!,
+    clientSecret: process.env.CLIENT_SECRET!,
+    callbackURL: process.env.SERVER_URL + "/api/auth/login/google/callback"
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      //done(err, user) will return the user we got from google
+      done(null, formatGoogle(profile._json));
+    }
+  )
+);
+
+
+
+declare global {
+  namespace Express {
+    interface User {
+      firstName: string,
+      lastName: string,
+      email: string,
+    }
+  }
+}
+
+// p serialize user ke session
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((user, done) => done(null, user as Express.User));
+const formatGoogle = (profile: any) => {
+  return {
+    firstName: profile.given_name,
+    lastName: profile.family_name,
+    email: profile.email
+  };
+};
+
+
+////
+initPassport(app);
+
+
 
 
 app.use(express.json());
