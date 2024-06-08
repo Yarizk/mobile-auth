@@ -9,10 +9,10 @@ export const faker = new Faker({
 })
 
 function getRandomNum({min, max}: {min: number, max: number}) {
-  return  Math.round( Math.random() * (max - min) + min);
+  return   Math.random() * (max - min) + min;
 }
 
-
+// -7.771832263016966, 110.37358810503908
 export async  function seedRandomDoctor() {
     const doctorPics: string[] = ['https://img.freepik.com/free-photo/beautiful-young-female-doctor-looking-camera-office_1301-7807.jpg', 
             'https://png.pngtree.com/png-clipart/20231002/original/pngtree-young-afro-professional-doctor-png-image_13227671.png',
@@ -29,12 +29,15 @@ export async  function seedRandomDoctor() {
     // kebumen  -7.674637745074407  109.65838381007573
     //  taman pancasila=-7.59732682561945, 110.95034623566734
     const hospitals = ["Siloam", "RSUD", "Sardjito", "Yarsis", "Kasih Ibu", "RS UNS"," RS UGM", "RS UMS"]
-    for (let i=0; i < 100; i++) {
+    for (let i=0; i < 1000; i++) {
         const randomInteger = Math.round(getRandomNum({min: 0, max: 10}))
         // -7.821800411929682, 110.32432872552427
         // -7.762315251638179, 110.41359170743628
-        const docLatitude = getRandomNum({min: -7.821800411929682, max:  -7.762315251638179})
-        const docLongitude = getRandomNum({min: 110.32432872552427, max:  110.41359170743628})
+
+        // -7.76757495604769, 110.37864098110552 ugm
+        // -7.770233585317687, 110.37336182212557 rs ugm
+        const docLatitude = getRandomNum({min: -7.770233585317687, max:  -7.76757495604769})
+        const docLongitude = getRandomNum({min: 110.37336182212557, max:   110.37864098110552})
         const geoHash = geohash.encode(docLatitude, docLongitude);
         const docAvailability: IAvailability = {
                 office: hospitals[  Math.round( getRandomNum({min:0 , max: 7}))],

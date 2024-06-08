@@ -84,12 +84,12 @@ function nearestDoctorFinderKurangDariTenKM( neighborsBox: string[], doctors: an
             const currentDoctorLoc = precision == 6 ?  doctors[i].geohashLoc.substr(0,6): doctors[i].geohashLoc.substr(0,5);
 
             let sameLength = 0;
-            if (currentDoctorLoc[i] == geohashLocUser){
+            if (currentDoctorLoc== geohashLocUser){
                 nearestDoctor.push(currentDoctor)
             }
             
             // buat box uatara user
-            if (upperBox[i] == geohashLocUser) {
+            if (upperBox== geohashLocUser) {
                 nearestDoctor.push(currentDoctor)
             }
 
@@ -131,12 +131,12 @@ function nearestDoctorFinder( neighborsBox: string[], doctors: any, geohashLocUs
             const currentDoctorLoc =  doctors[i].geohashLoc[precision].substr(0, precision);
 
             let sameLength = 0;
-            if (currentDoctorLoc[i] == geohashLocUser){
+            if (currentDoctorLoc== geohashLocUser){
                 nearestDoctor.push(currentDoctor)
             }
             
             // buat box uatara user
-            if (upperBox[i] == geohashLocUser) {
+            if (upperBox == geohashLocUser) {
                 nearestDoctor.push(currentDoctor)
             }
 

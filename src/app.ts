@@ -11,6 +11,7 @@ import dbConfig from './config/db.config';
 import Celebrate from 'celebrate';
 import { faker } from '@faker-js/faker';
 import { seedRandomDoctor } from './util/seedDoctor';
+import Doctor from './models/doctor.model';
 
 
 
@@ -30,6 +31,7 @@ dbConfig();
 
 // (async () => {
 //   try {
+//     // await Doctor.deleteMany()
 //     await seedRandomDoctor();
 //     console.log("doctor data seeded!! :)")
 //   } catch (e) {
