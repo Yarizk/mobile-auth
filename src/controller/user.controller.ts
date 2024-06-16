@@ -21,7 +21,7 @@ export const updateProfile = async (req: Request, res: Response) => {
     }
 
     const check = await User.findOne({ phoneNumber, nik });
-    if (check) {
+    if (check && check.id != userId) {
       return res.status(400).json({ message: "Phone number, or nik already taken." });
     }
 
