@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { Joi, celebrate } from 'celebrate';
-import { registerUser, loginUser, validateOTP, loginGoogle, sendNewOTP } from '../controller/auth.controller';
+import { registerUser, loginUser, validateOTP, loginGoogle, sendNewOTP, requestPasswordReset, resetPassword } from '../controller/auth.controller';
 import { loginSchema, otpSchema, registerSchema } from '../schema/validationSchema';
 import { requireAuth } from '../middlewares/auth.middlewares';
 import passport from "passport";
@@ -38,5 +38,7 @@ router.get(
     passport.authenticate("google", { failureRedirect: "/auth/google" }),
      loginGoogle,
 )
+router.post('/request-password-reset', requestPasswordReset);
+router.post('/reset-password', resetPassword);
 
 export default router;

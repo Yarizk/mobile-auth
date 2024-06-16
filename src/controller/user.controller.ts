@@ -14,18 +14,18 @@ export const updateProfile = async (req: Request, res: Response) => {
 
   try {
     const userId = req.currentUser!.id;
-    const { fullName, email, phoneNumber, gender, dateOfBirth, nik } = req.body;
+    const { fullName, phoneNumber, gender, dateOfBirth, nik } = req.body;
 
-    if (!fullName || !email || !phoneNumber || !gender || !dateOfBirth || !nik) {
+    if (!fullName || !phoneNumber || !gender || !dateOfBirth || !nik) {
       return res.status(400).json({ message: "All fields are required." });
     }
 
-    const check = await User.findOne({ email, phoneNumber, nik: dateOfBirth });
+    const check = await User.findOne({ phoneNumber, nik });
     if (check) {
-      return res.status(400).json({ message: "Email, phone number, or nik already taken." });
+      return res.status(400).json({ message: "Phone number, or nik already taken." });
     }
 
-    const user = await User.findByIdAndUpdate(userId, { fullName, email, phoneNumber, gender, dateOfBirth, nik }, { new: true });
+    const user = await User.findByIdAndUpdate(userId, { fullName, phoneNumber, gender, dateOfBirth, nik }, { new: true });
     if (!user) {
       return res.status(404).json({ message: "User not found." });
     }
@@ -33,7 +33,6 @@ export const updateProfile = async (req: Request, res: Response) => {
     let profile = {
       _id: user._id,
       fullName: user.fullName,
-      email: user.email,
       phoneNumber: user.phoneNumber,
       gender: user.gender,
       dateOfBirth: user.dateOfBirth,
@@ -43,7 +42,7 @@ export const updateProfile = async (req: Request, res: Response) => {
     res.status(200).json(profile);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Email, phone number, or nik already taken." });
+    res.status(500).json({ error: "Phone number, or nik already taken." });
   }
 };
 
@@ -108,3 +107,4 @@ export const updateProfilePicture = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Error updating profile picture." });
   }
 };
+

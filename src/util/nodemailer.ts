@@ -6,7 +6,7 @@ import nodemailer from "nodemailer"
 
 
 
-export async function sendOTPMail(  email: string, otp: string,) {
+export async function sendOTPMail(  email: string, otp: string, options?: any) {
     try {
 
         let oAuth2Client = new google.auth.OAuth2(process.env.CLIENT_ID, process.env.CLIENT_SECRET, 'https://developers.google.com/oauthplayground')
@@ -29,7 +29,7 @@ export async function sendOTPMail(  email: string, otp: string,) {
         const mailOptions = {
             from: "mobappsmailer@gmail.com",
             to: email,
-            subject: "Verify Your Email",
+            subject: options?.subject || "Verify Your Email",
             html: `
             <!DOCTYPE html>
                 <html lang="en">
@@ -98,7 +98,6 @@ export async function sendOTPMail(  email: string, otp: string,) {
                         <h1>Verification Code</h1>
                     </div>
                     <div class="content">
-                        <p>Thank you for sign in!</p>
                         <p>Your OTP code is:</p>
                         <p class="otp">${otp}</p>
                         <p>Please enter this code to verify your authentication.</p>

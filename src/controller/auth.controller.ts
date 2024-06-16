@@ -214,3 +214,63 @@ export const sendNewOTP = async (req: Request, res: Response) => {
   }
   
 }
+
+export const requestPasswordReset = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
+    const expiresAt = addHours(new Date(), 1);
+
+    const otpEntry = new OTP({
+      otp,
+      userID: user._id,
+      email,
+      expiresAt,
+    });
+
+    await otpEntry.save();
+    await sendOTPMail(email, otp, { subject: 'Password Reset OTP' });
+
+    res.status(200).json({ message: 'Password reset OTP sent successfully.' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error sending password reset OTP.' });
+  }
+};
+
+export const resetPassword = async (req: Request, res: Response) => {
+  try {
+    const { email, otp, newPassword } = req.body;
+
+    const otpEntry = await OTP.findOne({ email, otp }).sort({ expiresAt: 'desc' });
+    if (!otpEntry) {
+      return res.status(400).json({ error: 'Invalid or expired OTP.' });
+    }
+
+    if (otpEntry.expiresAt < new Date()) {
+      return res.status(400).json({ error: 'OTP has expired.' });
+    }
+
+    const user = await User.findById(otpEntry.userID);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    const hashedPassword = bcrypt.hashSync(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    otpEntry.used = true;
+    await otpEntry.save();
+
+    res.status(200).json({ message: 'Password has been reset successfully.' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error resetting password.' });
+  }
+};
+
