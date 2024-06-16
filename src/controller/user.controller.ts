@@ -91,7 +91,7 @@ export const updateProfilePicture = async (req: Request, res: Response) => {
 
     fs.writeFileSync(filePath, file);
 
-    const profilePicUrl = `${process.env.HOST}/uploads/${fileName}`;
+    const profilePicUrl = `${process.env.SERVER_URL}/uploads/${fileName}`;
 
     const user = await User.findByIdAndUpdate(userId, 
       { profilePicUrl },
