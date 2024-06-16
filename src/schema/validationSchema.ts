@@ -73,12 +73,6 @@ export const updateProfileSchema = {
       'string.max': 'Full name must be less than or equal to 50 characters long',
       'any.required': 'Full name is required',
     }),
-    email: Joi.string().email().required().messages({
-      'string.base': 'Email must be a valid email address',
-      'string.email': 'Email must be a valid email address',
-      'string.empty': 'Email cannot be empty',
-      'any.required': 'Email is required',
-    }),
     phoneNumber: Joi.string().pattern(/^\d{10,15}$/).required().messages({
       'string.base': 'Phone number must be a string of digits',
       'string.empty': 'Phone number cannot be empty',
