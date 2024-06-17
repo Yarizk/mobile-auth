@@ -229,11 +229,12 @@ export const requestPasswordReset = async (req: Request, res: Response) => {
     const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
     const expiresAt = addHours(new Date(), 1);
     const emailUser = user.email;
+    // console.log(emailUser)
 
     const otpEntry = new OTP({
       otp,
       userID: user._id,
-      emailUser,
+      email:emailUser,
       expiresAt,
     });
 
@@ -242,6 +243,7 @@ export const requestPasswordReset = async (req: Request, res: Response) => {
 
     res.status(200).json({ message: 'Password reset OTP sent successfully.' });
   } catch (error) {
+    console.log(error)
     res.status(500).json({ error: 'Error sending password reset OTP.' });
   }
 };
